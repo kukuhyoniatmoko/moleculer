@@ -626,9 +626,9 @@ declare namespace Moleculer {
 		hooks?: ServiceHooks;
 
 		events?: ServiceEvents;
-		created?: (() => void) | Array<() => void>;
-		started?: (() => Promise<void>) | Array<() => Promise<void>>;
-		stopped?: (() => Promise<void>) | Array<() => Promise<void>>;
+		created?: ((this: Service<S>) => void) | Array<(this: Service<S>) => void>;
+		started?: ((this: Service<S>) => Promise<void>) | Array<(this: Service<S>) => Promise<void>>;
+		stopped?: ((this: Service<S>) => Promise<void>) | Array<(this: Service<S>) => Promise<void>>;
 
 		[name: string]: any;
 	}
@@ -1375,7 +1375,7 @@ declare namespace Moleculer {
 		ui: Vorpal.UI;
 		activeCommand: Vorpal.CommandInstance;
 	}
-	
+
 	namespace Vorpal {
 		interface Args {
 			[key: string]: any;
@@ -1383,14 +1383,14 @@ declare namespace Moleculer {
 				[key: string]: any;
 			};
 		}
-	
+
 		interface PromptObject {
 			[key: string]: any;
 		}
-	
+
 		type Action = (args: Args) => Promise<void>;
 		type Cancel = () => void;
-	
+
 		class Command {
 			_name: string;
 			_fn: Action;
@@ -1408,11 +1408,11 @@ declare namespace Moleculer {
 			cancel(cancel: Cancel): this;
 			allowUnknownOptions(): this;
 		}
-	
+
 		class Catch extends Command { }
-	
+
 		class Extension { }
-	
+
 		class UI {
 			delimiter(text?: string): string;
 			input(text?: string): string;
@@ -1425,7 +1425,7 @@ declare namespace Moleculer {
 				done(): void;
 			};
 		}
-	
+
 		class CommandInstance {
 			log(value: string, ...values: string[]): void;
 			prompt(prompt: object | ReadonlyArray<object>): Promise<PromptObject>;
